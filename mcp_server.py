@@ -1,7 +1,7 @@
 """
 DuckDuckGo MCP-Server für llama.cpp WebUI
 Verbinde ihn in der llama.cpp WebUI über:
-  http://127.0.0.1:3001/sse
+  http://127.0.0.1:3001/mcp
 """
 
 import argparse
@@ -66,8 +66,8 @@ def web_search(query: str, region: str = "de-de") -> str:
 
 
 if __name__ == "__main__":
-    print(f"DuckDuckGo MCP-Server startet auf http://{args.host}:{args.port}/sse")
+    print(f"DuckDuckGo MCP-Server startet auf http://{args.host}:{args.port}/mcp")
     print("Verbinde in llama.cpp WebUI mit dieser URL als MCP-Server.")
     print("Strg+C zum Beenden.\n")
 
-    mcp.run(transport="sse")
+    mcp.run(transport="streamable-http")
