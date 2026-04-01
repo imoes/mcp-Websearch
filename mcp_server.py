@@ -68,7 +68,7 @@ def web_search(query: str, region: str = "de-de") -> str:
     try:
         with DDGS() as ddgs:
             results = list(ddgs.text(
-                keywords=query,
+                query,
                 region=region,
                 safesearch="moderate",
                 max_results=MAX_SEARCH_RESULTS
