@@ -26,9 +26,10 @@ mcp = FastMCP(
     "DuckDuckGo Websuche",
     host=args.host,
     port=args.port,
+    stateless_http=True,
     transport_security=TransportSecuritySettings(
         allowed_hosts=["localhost", "127.0.0.1", f"localhost:{args.port}", f"{args.host}:{args.port}"],
-        allowed_origins=["http://localhost", "http://127.0.0.1", f"http://{args.host}:{args.port}"],
+        allowed_origins=["http://localhost", "http://127.0.0.1", f"http://localhost:{args.port}", f"http://{args.host}:{args.port}"],
     ),
 )
 
