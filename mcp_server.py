@@ -22,8 +22,27 @@ parser.add_argument("--host", default=DEFAULT_HOST, help=f"Host (default: {DEFAU
 parser.add_argument("--port", type=int, default=DEFAULT_PORT, help=f"Port (default: {DEFAULT_PORT})")
 args = parser.parse_args()
 
+INSTRUCTIONS = """
+Du hast Zugriff auf das Tool `web_search`, mit dem du aktuelle Informationen aus dem Internet abrufen kannst.
+
+Nutze `web_search` IMMER in folgenden Situationen:
+- Der Nutzer fragt nach aktuellen Ereignissen, Nachrichten oder Entwicklungen
+- Der Nutzer fragt nach Preisen, Kursen, Wetterdaten oder anderen sich ändernden Informationen
+- Dein Trainingswissen könnte veraltet sein (älter als 1-2 Jahre)
+- Du bist dir nicht sicher, ob deine gespeicherten Informationen noch korrekt sind
+- Der Nutzer sagt etwas wie: "suche", "such", "google", "recherchiere", "finde heraus", "was ist aktuell", "neueste", "aktuelle", "heutige"
+- Der Nutzer stellt eine Frage, auf die du keine zuverlässige Antwort aus deinem Training geben kannst
+
+Nutze `web_search` NICHT bei:
+- Allgemeinen Wissensfragen zu stabilen Fakten (Mathematik, Grammatik, Programmierkonzepte)
+- Aufgaben wie Texte schreiben, Code erklären oder umformulieren
+
+Führe die Suche immer zuerst durch, bevor du antwortest, wenn einer der obigen Punkte zutrifft.
+"""
+
 mcp = FastMCP(
     "DuckDuckGo Websuche",
+    instructions=INSTRUCTIONS,
     host=args.host,
     port=args.port,
     stateless_http=True,
