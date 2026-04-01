@@ -14,7 +14,12 @@ DEFAULT_PORT       = 3001
 MAX_SEARCH_RESULTS = 25
 # ─────────────────────────────────────────────────────────────────────────────
 
-mcp = FastMCP("DuckDuckGo Websuche")
+parser = argparse.ArgumentParser(description="DuckDuckGo MCP-Server für llama.cpp")
+parser.add_argument("--host", default=DEFAULT_HOST, help=f"Host (default: {DEFAULT_HOST})")
+parser.add_argument("--port", type=int, default=DEFAULT_PORT, help=f"Port (default: {DEFAULT_PORT})")
+args = parser.parse_args()
+
+mcp = FastMCP("DuckDuckGo Websuche", host=args.host, port=args.port)
 
 
 @mcp.tool()
@@ -61,13 +66,8 @@ def web_search(query: str, region: str = "de-de") -> str:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="DuckDuckGo MCP-Server für llama.cpp")
-    parser.add_argument("--host", default=DEFAULT_HOST, help=f"Host (default: {DEFAULT_HOST})")
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT, help=f"Port (default: {DEFAULT_PORT})")
-    args = parser.parse_args()
-
     print(f"DuckDuckGo MCP-Server startet auf http://{args.host}:{args.port}/sse")
     print("Verbinde in llama.cpp WebUI mit dieser URL als MCP-Server.")
     print("Strg+C zum Beenden.\n")
 
-    mcp.run(transport="sse", host=args.host, port=args.port)
+    mcp.run(transport="sse")
