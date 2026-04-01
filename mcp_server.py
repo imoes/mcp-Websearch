@@ -5,8 +5,10 @@ Verbinde ihn in der llama.cpp WebUI über:
 """
 
 import argparse
+import uvicorn
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
+from starlette.middleware.cors import CORSMiddleware
 from duckduckgo_search import DDGS
 
 # ── Konfiguration ────────────────────────────────────────────────────────────
@@ -79,4 +81,17 @@ if __name__ == "__main__":
     print("Verbinde in llama.cpp WebUI mit dieser URL als MCP-Server.")
     print("Strg+C zum Beenden.\n")
 
-    mcp.run(transport="streamable-http")
+    _allowed = [
+        "http://localhost",
+        "http://127.0.0.1",
+        f"http://localhost:{args.port}",
+        f"http://{args.host}:{args.port}",
+    ]
+    app = mcp.streamable_http_app()
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_allowed,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["*"],
+    )
+    uvicorn.run(app, host=args.host, port=args.port)
