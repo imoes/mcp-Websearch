@@ -9,7 +9,7 @@ import uvicorn
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
 from starlette.middleware.cors import CORSMiddleware
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 
 # ── Konfiguration ────────────────────────────────────────────────────────────
 DEFAULT_HOST       = "127.0.0.1"
