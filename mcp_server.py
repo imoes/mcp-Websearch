@@ -6,6 +6,7 @@ Verbinde ihn in der llama.cpp WebUI über:
 
 import argparse
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from duckduckgo_search import DDGS
 
 # ── Konfiguration ────────────────────────────────────────────────────────────
@@ -19,7 +20,14 @@ parser.add_argument("--host", default=DEFAULT_HOST, help=f"Host (default: {DEFAU
 parser.add_argument("--port", type=int, default=DEFAULT_PORT, help=f"Port (default: {DEFAULT_PORT})")
 args = parser.parse_args()
 
-mcp = FastMCP("DuckDuckGo Websuche", host=args.host, port=args.port)
+mcp = FastMCP(
+    "DuckDuckGo Websuche",
+    host=args.host,
+    port=args.port,
+    transport_security=TransportSecuritySettings(
+        allowed_origins=["http://localhost", "http://127.0.0.1", f"http://{args.host}:{args.port}"],
+    ),
+)
 
 
 @mcp.tool()
