@@ -1,10 +1,11 @@
 """
 DuckDuckGo MCP-Server für llama.cpp WebUI
 Verbinde ihn in der llama.cpp WebUI über:
-  http://127.0.0.1:3001/mcp
+  http://<server-ip>:3001/mcp
 """
 
 import argparse
+import socket
 import uvicorn
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
@@ -12,7 +13,7 @@ from starlette.middleware.cors import CORSMiddleware
 from ddgs import DDGS
 
 # ── Konfiguration ────────────────────────────────────────────────────────────
-DEFAULT_HOST       = "127.0.0.1"
+DEFAULT_HOST       = "0.0.0.0"
 DEFAULT_PORT       = 3001
 MAX_SEARCH_RESULTS = 25
 # ─────────────────────────────────────────────────────────────────────────────
@@ -47,8 +48,7 @@ mcp = FastMCP(
     port=args.port,
     stateless_http=True,
     transport_security=TransportSecuritySettings(
-        allowed_hosts=["localhost", "127.0.0.1", f"localhost:{args.port}", f"{args.host}:{args.port}"],
-        allowed_origins=["http://localhost", "http://127.0.0.1", f"http://localhost:{args.port}", f"http://{args.host}:{args.port}"],
+        enable_dns_rebinding_protection=False,
     ),
 )
 
@@ -97,20 +97,21 @@ def web_search(query: str, region: str = "de-de") -> str:
 
 
 if __name__ == "__main__":
-    print(f"DuckDuckGo MCP-Server startet auf http://{args.host}:{args.port}/mcp")
-    print("Verbinde in llama.cpp WebUI mit dieser URL als MCP-Server.")
+    try:
+        local_ip = socket.gethostbyname(socket.gethostname())
+    except Exception:
+        local_ip = "?.?.?.?"
+
+    print(f"DuckDuckGo MCP-Server läuft auf Port {args.port}")
+    print(f"  Lokal:   http://localhost:{args.port}/mcp")
+    print(f"  Netzwerk: http://{local_ip}:{args.port}/mcp")
+    print("Verbinde in llama.cpp WebUI mit der Netzwerk-URL als MCP-Server.")
     print("Strg+C zum Beenden.\n")
 
-    _allowed = [
-        "http://localhost",
-        "http://127.0.0.1",
-        f"http://localhost:{args.port}",
-        f"http://{args.host}:{args.port}",
-    ]
     app = mcp.streamable_http_app()
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=_allowed,
+        allow_origins=["*"],
         allow_methods=["GET", "POST", "OPTIONS"],
         allow_headers=["*"],
     )
