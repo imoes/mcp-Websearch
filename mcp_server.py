@@ -248,7 +248,15 @@ def web_search(query: str, region: str = "de-de") -> str:
 
         print(f"[MCP] {len(results)} Ergebnisse gefunden.", flush=True)
 
-        lines = [f"{label}-Suchergebnisse für \"{query}\" ({len(results)} Treffer):\n"]
+        lines = [
+            f"{label}-Suchergebnisse für \"{query}\" ({len(results)} Treffer):\n",
+            "PFLICHT-ANWEISUNG FÜR DEINE ANTWORT:",
+            "1. Setze Fußnoten [1], [2], ... direkt im Fließtext hinter jede Information die du verwendest.",
+            "2. Schreibe am Ende einen Abschnitt **Quellen:** mit nur den tatsächlich zitierten Quellen als Markdown-Links:",
+            "   [1] [Seitentitel](https://url)",
+            "   [2] [Seitentitel](https://url)",
+            "3. Liste NICHT alle 25 Quellen auf — nur die, die du wirklich verwendet hast.\n",
+        ]
         for i, r in enumerate(results, 1):
             title = r.get("title", "Kein Titel")
             url   = r.get("href", "")
