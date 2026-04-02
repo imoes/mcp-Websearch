@@ -133,19 +133,34 @@ llama-server.exe ^
 
 In einem **zweiten Terminal** (venv aktiviert):
 
+#### DuckDuckGo (Standard, kein API-Key nötig)
 ```bash
 python mcp_server.py
 ```
 
-Ausgabe:
-```
-DuckDuckGo MCP-Server startet auf http://127.0.0.1:3001/sse
-Verbinde in llama.cpp WebUI mit dieser URL als MCP-Server.
-```
-
-Mit benutzerdefiniertem Port:
+#### Google Custom Search
+Benötigt einen [Google API-Key](https://developers.google.com/custom-search/v1/introduction) und eine [Custom Search Engine ID (CX)](https://programmablesearchengine.google.com/):
 ```bash
-python mcp_server.py --port 3002
+python mcp_server.py --provider google --api-key AIzaSy... --cx 123456789:abc
+```
+> Kostenloses Kontingent: 100 Suchanfragen/Tag. Pro Suche werden bis zu 3 API-Aufrufe gemacht (à 10 Ergebnisse = 25 Treffer).
+
+#### Brave Search
+Benötigt einen [Brave Search API-Key](https://brave.com/search/api/):
+```bash
+python mcp_server.py --provider brave --api-key BSAx...
+```
+> Free-Tier: 2.000 Suchanfragen/Monat.
+
+#### Allgemeine Optionen
+```
+python mcp_server.py --help
+
+  --provider  {duckduckgo,google,brave}   Suchanbieter (default: duckduckgo)
+  --api-key   API_KEY                     API-Key für Google oder Brave
+  --cx        CX                          Google Custom Search Engine ID
+  --host      HOST                        Host (default: 0.0.0.0)
+  --port      PORT                        Port (default: 3001)
 ```
 
 ### A.3 — MCP-Server in der WebUI verbinden
