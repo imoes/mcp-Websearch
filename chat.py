@@ -31,10 +31,17 @@ Wann du NICHT suchen musst:
 - Mathematik, Logik, Programmierkonzepte
 - Kreative Aufgaben wie Texte schreiben
 
-Nach einer Websuche:
-1. Fasse die relevanten Ergebnisse klar und strukturiert zusammen
-2. Nenne die Quellen mit URLs am Ende
-3. Trenne deutlich zwischen allgemeinem Wissen und den Suchergebnissen"""
+Nach einer Websuche MUSST du folgendes Format einhalten:
+1. Setze im Fließtext Fußnoten in eckigen Klammern [1], [2], ... direkt nach der jeweiligen Information
+2. Jede Fußnotennummer entspricht der "Quelle [N]"-Nummer aus den Suchergebnissen
+3. Verwende nur Quellen, die du tatsächlich zitierst — nicht alle 25 auflisten
+4. Schreibe am Ende deiner Antwort einen Abschnitt "**Quellen:**" mit den zitierten Quellen als Markdown-Links:
+
+   **Quellen:**
+   [1] [Titel der Seite](https://url.example.com)
+   [2] [Titel der Seite](https://url.example.com)
+
+Trenne deutlich zwischen allgemeinem Wissen und den Suchergebnissen."""
 
 TOOL_DEFINITION = [
     {
@@ -87,9 +94,9 @@ def duckduckgo_search(query: str, region: str = "de-de") -> str:
             title = result.get("title", "Kein Titel")
             url   = result.get("href", "")
             body  = result.get("body", "Keine Beschreibung")
-            formatted += f"[{i}] {title}\n"
-            formatted += f"    URL: {url}\n"
-            formatted += f"    {body}\n\n"
+            formatted += f"Quelle [{i}]: {title}\n"
+            formatted += f"URL: {url}\n"
+            formatted += f"Zusammenfassung: {body}\n\n"
 
         return formatted
 
