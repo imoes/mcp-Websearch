@@ -27,7 +27,6 @@ import urllib.request
 import json
 import uvicorn
 from mcp.server.fastmcp import FastMCP
-from mcp.server.transport_security import TransportSecuritySettings
 from starlette.middleware.cors import CORSMiddleware
 
 # ── Konfiguration ────────────────────────────────────────────────────────────
@@ -114,9 +113,6 @@ mcp = FastMCP(
     host=args.host,
     port=args.port,
     stateless_http=True,
-    transport_security=TransportSecuritySettings(
-        enable_dns_rebinding_protection=False,
-    ),
 )
 
 
