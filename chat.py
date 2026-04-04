@@ -90,12 +90,6 @@ def duckduckgo_search(query: str, region: str = "de-de") -> str:
         print(f"[Websuche] {len(results)} Ergebnisse gefunden.\n", flush=True)
 
         formatted  = f"DuckDuckGo-Suchergebnisse für \"{query}\" ({len(results)} Ergebnisse):\n\n"
-        formatted += "PFLICHT-ANWEISUNG FÜR DEINE ANTWORT:\n"
-        formatted += "1. Setze Fußnoten [1], [2], ... direkt im Fließtext hinter jede Information die du verwendest.\n"
-        formatted += "2. Schreibe am Ende einen Abschnitt **Quellen:** mit nur den tatsächlich zitierten Quellen als Markdown-Links:\n"
-        formatted += "   [1] [Seitentitel](https://url)\n"
-        formatted += "   [2] [Seitentitel](https://url)\n"
-        formatted += "3. Liste NICHT alle 25 Quellen auf — nur die, die du wirklich verwendet hast.\n\n"
         for i, result in enumerate(results, 1):
             title = result.get("title", "Kein Titel")
             url   = result.get("href", "")
